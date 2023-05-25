@@ -1,0 +1,21 @@
+# # exception to the rule
+staticfiles/*
+!staticfiles/.keep
+
+static/*
+!static/.keep
+
+.env
+
+### Django ###
+entorno/
+*.log
+*.pot
+*.pyc
+api/__pycache__
+api/models/__pycache__
+api/serializers/__pycache__
+api/viewsets/__pycache__
+api/consumers/__pycache__
+api/middlewares/__pycache__
+api/urls_ws/__pycache__

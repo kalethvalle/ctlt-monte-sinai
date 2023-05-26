@@ -3,8 +3,7 @@ from api.models.users import User
 from api.models.zones import Zones
 from api.models.diseases import Diseases
 from api.models.patients import Patients
-
-query = Patients.objects.all()
+from api.models.professionals import Professionals
 
 class Admin(admin.AdminSite):
     site_header = "Control de turno"
@@ -66,8 +65,6 @@ class PatientsAdmin(admin.ModelAdmin):
         '_fullName',
         'number_document',
         'zone',
-        # 'eps',
-        # 'age',
     )
 
     list_filter = (
@@ -99,10 +96,51 @@ class PatientsAdmin(admin.ModelAdmin):
         ),
     ]
 
+    radio_fields = {
+        "type_document": admin.HORIZONTAL,
+    }
 
     autocomplete_fields = [
-        "diseases"
+        "diseases",
     ]
+
+class ProfessionalsAdmin(admin.ModelAdmin):
+    list_display = (
+        '_fullName',
+        'number_document',
+        'role',
+        'workshift',
+    )
+
+    list_filter = (
+        'role',
+        'workshift',
+    )
+
+    fieldsets =  [
+        (
+            "Datos personales del profecional",
+            {
+                "fields": [
+                    "name", 
+                    "last_name",
+                    "type_document",
+                    "number_document",
+                ],
+            },
+        ),
+        (
+            "Otros datos del profecional ",
+            {
+                "fields": [("role", "workshift"),],
+            },
+        ),
+    ]
+
+    radio_fields = {
+        "role": admin.HORIZONTAL,
+        "workshift": admin.HORIZONTAL
+    }
 
 
 admin_site = Admin(name="CtlT")
@@ -110,3 +148,4 @@ admin_site.register(User, UserAdmin)
 admin_site.register(Zones, ZoneAdmin)
 admin_site.register(Diseases, DiseaseAdmin)
 admin_site.register(Patients, PatientsAdmin)
+admin_site.register(Professionals, ProfessionalsAdmin)

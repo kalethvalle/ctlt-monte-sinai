@@ -3,23 +3,25 @@
 from django.db import models
 from api.models.zones import Zones
 from api.models.diseases import Diseases
+from api.core.list_eps import getListAllEps
 
 class Patients(models.Model):
-    zone = models.ForeignKey(Zones, on_delete=models.PROTECT)
+    zone = models.ForeignKey(Zones, on_delete=models.PROTECT, help_text="Zona de ubicación del paciente")
 
     name = models.CharField('Name', max_length=50, default="", help_text="Nombre paciente")
     last_name = models.CharField('Last name', max_length=50, default="", help_text="Apellido del paciente")
 
     TYPE_DOCUMENT_CHOICES = [(0, 'C.c'), (1, 'T.i'), (2, 'R.c'), (3, 'C.e')]
-    type_document = models.IntegerField(choices=TYPE_DOCUMENT_CHOICES, default=0)
+    type_document = models.IntegerField(choices=TYPE_DOCUMENT_CHOICES, default=0, help_text="Tipo de documento")
 
     number_document = models.IntegerField('Number Document', default=0, help_text="Número de documento")
     birth_date = models.DateField('Birth date', help_text="Fecha nacimiento del paciente")
     age = models.IntegerField('Age', default=0, help_text="Edad del paciente")
 
-    eps = models.CharField('Eps', max_length=10, default="", help_text="Codigo Eps del paciente")
+    EPS_CHOICES = getListAllEps()
+    eps = models.CharField('Eps', max_length=10, choices=EPS_CHOICES, default="", help_text="Codigo Eps del paciente")
 
-    diseases = models.ManyToManyField(Diseases)
+    diseases = models.ManyToManyField(Diseases, help_text="Enfermedades del paciente")
 
     created_at = models.DateTimeField('created at', auto_now_add=True, help_text='Date time on which the object was created.')
     modified_at = models.DateTimeField('modified at', auto_now=True, help_text='Date time on which the object was last modified.')

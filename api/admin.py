@@ -1,9 +1,12 @@
+from django import forms
 from django.contrib import admin
 from api.models.users import User
 from api.models.zones import Zones
 from api.models.diseases import Diseases
 from api.models.patients import Patients
 from api.models.professionals import Professionals
+from api.models.questions import Questions
+from api.models.options import Options
 
 class Admin(admin.AdminSite):
     site_header = "Control de turno"
@@ -27,7 +30,6 @@ class UserAdmin(admin.ModelAdmin):
         'phone_number',
         'number_document',
     )
-
 
 class ZoneAdmin(admin.ModelAdmin):
     list_display = (
@@ -79,7 +81,7 @@ class PatientsAdmin(admin.ModelAdmin):
             "Datos personales del paciente",
             {
                 "fields": [
-                    "name", 
+                    "name",
                     "last_name",
                     "type_document",
                     "number_document",
@@ -142,6 +144,39 @@ class ProfessionalsAdmin(admin.ModelAdmin):
         "workshift": admin.HORIZONTAL
     }
 
+class OptionsInline(admin.StackedInline):
+    model = Options
+    extra = 0
+    fields = [
+        "value",
+    ]
+
+class QuestionsAdmin(admin.ModelAdmin):
+    inlines = [
+        OptionsInline,
+    ]
+
+    list_display = (
+        'question',
+        'zone',
+    )
+
+    list_filter = (
+        'zone__name',
+        'options__value'
+    )
+
+    fieldsets =  [
+        (
+            "",
+            {
+                "fields": [
+                    "question", 
+                    "zone",
+                ],
+            },
+        ),
+    ]
 
 admin_site = Admin(name="CtlT")
 admin_site.register(User, UserAdmin)
@@ -149,3 +184,4 @@ admin_site.register(Zones, ZoneAdmin)
 admin_site.register(Diseases, DiseaseAdmin)
 admin_site.register(Patients, PatientsAdmin)
 admin_site.register(Professionals, ProfessionalsAdmin)
+admin_site.register(Questions, QuestionsAdmin)

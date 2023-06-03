@@ -6,7 +6,7 @@ from api.models.diseases import Diseases
 from api.core.list_eps import getListAllEps
 
 class Patients(models.Model):
-    zone = models.ForeignKey(Zones, on_delete=models.PROTECT, help_text="Zona de ubicación del paciente")
+    zone = models.ForeignKey(Zones, on_delete=models.PROTECT, related_name="patients", help_text="Zona de ubicación del paciente")
 
     name = models.CharField('Name', max_length=50, default="", help_text="Nombre paciente")
     last_name = models.CharField('Last name', max_length=50, default="", help_text="Apellido del paciente")

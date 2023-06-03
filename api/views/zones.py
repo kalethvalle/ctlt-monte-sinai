@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 from api.models.zones import Zones
@@ -44,6 +44,7 @@ class ZonesView(View):
             template_name='CtlT/zone.html',
             context={
                 "zones": zones,
-                "zone": zone
+                "zone": zone,
+                "success_message": "Saved Successfully"
             }
         )

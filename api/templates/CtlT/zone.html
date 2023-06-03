@@ -34,33 +34,10 @@
         <br />
         {% endfor %}
         <hr class="my-4">
-        <button class="btn btn-outline-success">Guardar</button>
+        <button class="btn mb-3" style="background-color: #417690; color: white;">Guardar</button>
     </form>
 </div>
 
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto">Notification</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            {{ success_message }}
-        </div>
-    </div>
-</div>
-
-{% if success_message %}
-<script type="text/javascript">
-    toggleToast()
-    function toggleToast() {
-        var toastLiveExample = document.getElementById('liveToast')
-        var toast = new bootstrap.Toast(toastLiveExample)
-
-        toast.show()
-    }    
-
-</script>
-{% endif %}
+{% include 'core/notification.html' %}
 
 {% endblock %}

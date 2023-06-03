@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class="container">
-  <h2>Zonas disponibles</h2>
+  <h2 class="text-capitalize mt-2">Zonas disponibles</h2>
   <p> {{ success_message }} </p>
   <hr class="my-4">
   {% for zone in zones %}
@@ -11,7 +11,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-between" >
         <div>
-          <h4 >{{ zone }}</h4>
+          <h4 class="text-capitalize">{{ zone }}</h4>
         </div>
         <div>
           <a class="btn btn-primary" href="{% url 'api:zone' zone.id %}" role="button">Ir</a>

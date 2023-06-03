@@ -1,11 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.views import View
 
 from api.models.zones import Zones
 
 class HomeView(View):
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('api:login')
+
         zones = Zones.objects.all()
         return render(
             request,

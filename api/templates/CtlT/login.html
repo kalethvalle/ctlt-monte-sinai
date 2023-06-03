@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container d-flex justify-content-center p-5">
+    <div class="card" style="width: 25rem;">
+        <div class="card-header text-center" style="background-color: #417690; color: white;">
+            <h5 class="fw-light">Control de turno</h5>
+        </div>
+        <div class="card-body d-flex flex-column justify-content-center">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <label for="emialInput" class="form-label">Email address:</label>
+                    <input type="email" class="form-control" id="emialInput" name="email" >
+                </div>
+                <div class="mb-2">
+                    <label for="passwordInput" class="form-label">Contraseña:</label>
+                    <input type="password" class="form-control" name="password" id="passwordInput" >
+                </div>
+                <div class="mt-3 d-flex justify-content-center">
+                    <button class="btn btn-sm" style="background-color: #79aec8; color: white;">Iniciar sesión</button>
+                </div>
+            </form>
+            <a href="{% url 'admin:login' %}" target="_blank" class="card-link text-end mt-3" style="color: #417690">Inicio sesión Administración</a>
+        </div>
+    </div>
+</div>
+{% include 'core/notification.html' %}
+
+{% endblock %}

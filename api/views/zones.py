@@ -8,6 +8,9 @@ from api.models.form import Answer
 
 class ZonesView(View):
     def get(self, request, zone_id):
+        if not request.user.is_authenticated:
+            return redirect('api:login')
+
         zones = Zones.objects.all()
         zone = Zones.objects.get(id=zone_id)
         return render(
@@ -38,6 +41,7 @@ class ZonesView(View):
                 )
         
         zones = Zones.objects.all()
+        
 
         return render(
             request,
@@ -45,6 +49,6 @@ class ZonesView(View):
             context={
                 "zones": zones,
                 "zone": zone,
-                "success_message": "Saved Successfully"
+                "message": "Saved Successfully"
             }
         )

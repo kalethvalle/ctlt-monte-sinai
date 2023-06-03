@@ -9,8 +9,8 @@ from api.models.questions import Questions
 from api.models.options import Options
 
 class Admin(admin.AdminSite):
-    site_header = "Control de turno"
-    index_title = "Administración clinica  monte sinai"
+    site_header = "Administración control de turno"
+    index_title = "Clinica  monte sinai"
     site_title = site_header
 
 class UserAdmin(admin.ModelAdmin):

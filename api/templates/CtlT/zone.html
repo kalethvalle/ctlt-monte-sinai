@@ -5,38 +5,88 @@
 <div class="container">
     <h2> {{ zone.name }} </h2>
     <hr class="my-4">
+    <div id="dataPatient" class="row g-3"> </div>
+
     <form method="post">
         {% csrf_token %}
         <div class="mb-3">
-            <label for="exampleDataList" class="form-label">Nombre del paciente</label>
-            <input class="form-control" list="datalistOptions" name="usuario" id="exampleDataList"
-                placeholder="Pepito Perez">
-            <datalist id="datalistOptions">
+            <label for="userList" class="form-label">Nombre del paciente</label>
+            <select 
+                id="userList"
+                class="form-control selectpicker"
+                name="usuario"
+                data-show-subtext="true"
+                data-live-search="true"
+            >
+                <option value="">Seleccione Un Paciente</option>
                 {% for patient in zone.patients.all %}
-                <option value="{{patient.name}} {{ patient.last_name }}">
-                    {% endfor %}
-            </datalist>
+                    <option value="{{patient.id}}" class="text-capitalize"> {{patient.name}} {{ patient.last_name }}
+                    </option>
+                {% endfor %}
+            </select>
         </div>
 
         {% for question in zone.questions.all %}
-        <i>
-            <h6> {{ question.question }} </h6>
-        </i>
-        {% for option in question.options.all %}
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ option.id }}"
-                value="{{ option.id }}">
-            <label class="form-check-label" for="{{ option.id }}">
-                {{ option.value }}
-            </label>
-        </div>
-        {% endfor %}
-        <br />
+            <i>
+                <h6> {{ question.question }} </h6>
+            </i>
+            {% for option in question.options.all %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ option.id }}"
+                        value="{{ option.id }}">
+                    <label class="form-check-label" for="{{ option.id }}">
+                        {{ option.value }}
+                    </label>
+                </div>
+            {% endfor %}
+            <br />
         {% endfor %}
         <hr class="my-4">
         <button class="btn mb-3" style="background-color: #417690; color: white;">Guardar</button>
     </form>
 </div>
+
+<script type="text/javascript">
+    select = document.getElementById('userList')
+    select.addEventListener('change', (event) => {
+        validPatient(event.target.value)
+    })
+    
+    $patient = $('#dataPatient')
+    function validPatient(patient_id) {
+        fetch(`/patient/${patient_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(patient => {
+            showDataPatient(patient)
+        })
+        .catch(err => console.error('Error -> ', err))
+    
+    }
+
+    function showDataPatient(patient) {
+        console.log(patient);
+        $patient.append(`
+            <div class="col-md-2">
+                <label for="numberDocument" class="form-label">Numero de documento:</label>
+                <input type="text" class="form-control" id="numberDocument" disabled readonly value="${patient.document}">
+            </div>
+            <div class="col-md-1">
+                <label for="eps" class="form-label">Eps:</label>
+                <input type="text" class="form-control" id="eps" disabled readonly value="${patient.eps}">
+            </div>
+            <div class="col-md-3">
+                <label for="eps" class="form-label">DX:</label>
+                <input type="text" class="form-control" id="eps" disabled readonly value="F027">
+            </div>
+        `)    
+    }
+</script>
 
 {% include 'core/notification.html' %}
 

@@ -23,22 +23,25 @@ class ZonesView(View):
         )
     
     def post(self, request, zone_id):
+        if not request.user.is_authenticated:
+            return redirect('api:login')
+
         data = request.POST
         zone = Zones.objects.get(id=zone_id)
 
-        for key in list(data.keys()):
-            if 'question' in key.split('_'):
-                question_id = key.split('_')[1]
-                question = Questions.objects.get(id=question_id)
+        # for key in list(data.keys()):
+        #     if 'question' in key.split('_'):
+        #         question_id = key.split('_')[1]
+        #         question = Questions.objects.get(id=question_id)
 
-                option_id = data.get('question_{}'.format(question.id))
-                option = Options.objects.get(id=option_id)
-                Answer.objects.create(
-                    usuario=data.get('usuario'),
-                    zone=zone,
-                    question=question,
-                    selected_option=option
-                )
+        #         option_id = data.get('question_{}'.format(question.id))
+        #         option = Options.objects.get(id=option_id)
+        #         Answer.objects.create(
+        #             usuario=data.get('usuario')[0],
+        #             zone=zone,
+        #             question=question,
+        #             selected_option=option
+        #         )
         
         zones = Zones.objects.all()
         

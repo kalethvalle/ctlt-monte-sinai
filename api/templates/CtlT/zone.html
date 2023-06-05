@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class="container">
-    <h2> {{ zone.name }} </h2>
+    <h2 class="mt-3 text-uppercase text-center text-decoration-underline"> formulario de {{ zone.name }} </h2>
     <hr class="my-4">
     <div id="dataPatient" class="row g-3"> </div>
 
@@ -28,14 +28,16 @@
 
         {% for question in zone.questions.all %}
             <i>
-                <h6> {{ question.question }} </h6>
+                <h6 class="text-capitalize" > {{ question.question }}: </h6>
             </i>
             {% for option in question.options.all %}
-                <div class="form-check">
+                <div class="ms-3 form-check">
                     <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ option.id }}"
                         value="{{ option.id }}">
                     <label class="form-check-label" for="{{ option.id }}">
-                        {{ option.value }}
+                        <span class="text-capitalize">
+                            {{ option.value }}
+                        </span>
                     </label>
                 </div>
             {% endfor %}
@@ -53,24 +55,23 @@
     })
     
     $patient = $('#dataPatient')
-    function validPatient(patient_id) {
-        fetch(`/patient/${patient_id}`, {
+    async function validPatient(patient_id) {
+        $patient.empty();
+        if (!patient_id) return false
+
+        const response = await fetch(`/patient/${patient_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': '{{ csrf_token }}'
             }
         })
-        .then(response => response.json())
-        .then(patient => {
-            showDataPatient(patient)
-        })
-        .catch(err => console.error('Error -> ', err))
-    
+        const patient = await response.json();
+
+        if (patient) showDataPatient(patient)
     }
 
     function showDataPatient(patient) {
-        console.log(patient);
         $patient.append(`
             <div class="col-md-2">
                 <label for="numberDocument" class="form-label">Numero de documento:</label>
@@ -82,7 +83,7 @@
             </div>
             <div class="col-md-3">
                 <label for="eps" class="form-label">DX:</label>
-                <input type="text" class="form-control" id="eps" disabled readonly value="F027">
+                <input type="text" class="form-control" id="eps" disabled readonly value="${patient.diseases.map(disease => disease)}">
             </div>
         `)    
     }

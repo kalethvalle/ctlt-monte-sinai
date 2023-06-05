@@ -21,7 +21,7 @@ class Patients(models.Model):
     EPS_CHOICES = getListAllEps()
     eps = models.CharField('Eps', max_length=10, choices=EPS_CHOICES, default="", help_text="Codigo Eps del paciente")
 
-    diseases = models.ManyToManyField(Diseases, help_text="Enfermedades del paciente")
+    diseases = models.ManyToManyField(Diseases, related_name="diseases", help_text="Enfermedades del paciente")
 
     created_at = models.DateTimeField('created at', auto_now_add=True, help_text='Date time on which the object was created.')
     modified_at = models.DateTimeField('modified at', auto_now=True, help_text='Date time on which the object was last modified.')

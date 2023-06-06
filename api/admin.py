@@ -171,8 +171,8 @@ class QuestionsAdmin(admin.ModelAdmin):
             "",
             {
                 "fields": [
-                    "question", 
                     "zone",
+                    ("question", "multiple_option",)
                 ],
             },
         ),

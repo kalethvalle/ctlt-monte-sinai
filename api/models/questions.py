@@ -4,7 +4,7 @@ from api.models.zones import Zones
 
 class Questions(models.Model):
     question = models.CharField('Name', max_length=500, default="", help_text="Pregunta a formular")
-    
+    multiple_option = models.BooleanField('selección multiple', default=False, help_text="Permite selecición multiple")
     zone = models.ForeignKey(Zones, on_delete=models.PROTECT, related_name="questions", help_text="Zona de pregunta a formular")
 
     created_at = models.DateTimeField('created at', auto_now_add=True, help_text='Date time on which the object was created.')

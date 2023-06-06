@@ -9,21 +9,55 @@
 
     <form method="post">
         {% csrf_token %}
-        <div class="mb-3">
-            <label for="userList" class="form-label">Nombre del paciente</label>
-            <select 
-                id="userList"
-                class="form-control selectpicker"
-                name="usuario"
-                data-show-subtext="true"
-                data-live-search="true"
-            >
-                <option value="">Seleccione Un Paciente</option>
-                {% for patient in zone.patients.all %}
-                    <option value="{{patient.id}}" class="text-capitalize"> {{patient.name}} {{ patient.last_name }}
-                    </option>
-                {% endfor %}
-            </select>
+        <div class="row g-3 p-2 mb-3">
+            <div class="col-md-4">
+                <label for="userList" class="form-label">Nombre del paciente</label>
+                <select 
+                    id="userList"
+                    class="form-control selectpicker"
+                    name="patient_id"
+                    data-show-subtext="true"
+                    data-live-search="true"
+                >
+                    <option value="">Seleccione Un Paciente</option>
+                    {% for patient in zone.patients.all %}
+                        <option value="{{patient.id}}" class="text-capitalize"> {{patient.name}} {{ patient.last_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="professionalList" class="form-label">Nombre del Profesional</label>
+                <select 
+                    id="professionalList"
+                    class="form-control selectpicker"
+                    name="professional_id"
+                    data-show-subtext="true"
+                    data-live-search="true"
+                >
+                    <option value="">Seleccione Un Paciente</option>
+                    {% for professional in professionals %}
+                        <option value="{{professional.id}}" class="text-capitalize"> {{professional.name}} {{ professional.last_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="nurseList" class="form-label">Nombre del Enfermero</label>
+                <select 
+                    id="nurseList"
+                    class="form-control selectpicker"
+                    name="nurse_id"
+                    data-show-subtext="true"
+                    data-live-search="true"
+                >
+                    <option value="">Seleccione Un Paciente</option>
+                    {% for nurse in nurses %}
+                        <option value="{{nurse.id}}" class="text-capitalize"> {{nurse.name}} {{ nurse.last_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
 
         {% for question in zone.questions.all %}
@@ -32,7 +66,7 @@
             </i>
             {% for option in question.options.all %}
                 <div class="ms-3 form-check">
-                    <input class="form-check-input" type="radio" name="question_{{ question.id }}" id="{{ option.id }}"
+                    <input class="form-check-input" {% if question.multiple_option %} type="checkbox" {% else %} type="radio" {% endif %} name="question_{{ question.id }}" id="{{ option.id }}"
                         value="{{ option.id }}">
                     <label class="form-check-label" for="{{ option.id }}">
                         <span class="text-capitalize">

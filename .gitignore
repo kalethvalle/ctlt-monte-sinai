@@ -7,6 +7,11 @@ static/*
 
 .env
 
+dist/*
+build/*
+
+.DS_Store
+
 ### Django ###
 entorno/
 *.log

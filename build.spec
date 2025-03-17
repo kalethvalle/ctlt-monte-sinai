@@ -1,25 +1,28 @@
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
-from django.contrib.staticfiles import finders
 import os
 
-static_dir = os.path.join(os.getcwd(), "static")
+staticfiles_dir = os.path.join(os.getcwd(), 'staticfiles')
+static_dir = os.path.join(os.getcwd(), 'static') 
 template_dir = os.path.join(os.getcwd(), "api", "templates")
 db_file = os.path.join(os.getcwd(), "db.sqlite3")
-admin_static_dir = finders.find('admin')
-block_cipher = None  # Asegúrate de definir esto si no lo usas
+admin_static_dir = os.path.join(os.getcwd(), "staticfiles", "admin")
+wsgi_file = os.path.join(os.getcwd(), 'ctl_turno', 'wsgi.py')
+block_cipher = None
 
 # Configuración de Analysis
 a = Analysis(
     ['manage.py'],  # Punto de entrada
-    pathex=["."],  # Usar ruta absoluta del proyecto
+    pathex=[os.getcwd()],  # Usar ruta absoluta del proyecto
     binaries=[],
     datas=[ 
-        (static_dir, "static"),  # Archivos estáticos
-        (template_dir, "templates"),  # Templates
-        (db_file, "."),  # Base de datos
+        (staticfiles_dir, 'staticfiles'),
+        (static_dir, 'static'),
+        (template_dir, "templates"),
         (admin_static_dir, 'static/admin'),
-        # (os.path.join(os.getcwd(), "api"), "api"),
+        (wsgi_file, 'ctl_turno'),
+        (db_file, "."),
         *collect_data_files("django"),
+        *collect_data_files("whitenoise"),
     ],
     hiddenimports=[ 
         *collect_submodules("django"),
@@ -42,6 +45,7 @@ a = Analysis(
         "django.contrib.sessions.middleware",
         "django.contrib.sessions.serializers",
         "whitenoise",
+        "whitenoise.storage",
         "whitenoise.middleware",
         "whitenoise.runserver_nostatic",
     ],

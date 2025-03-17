@@ -13,3 +13,10 @@
  
 ### Run sever
 - python manage.py runserver
+
+### Build to .exe
+- pyinstaller --clean build.spec
+
+### Distruted
+- File `.exe` distributed any user machine
+- execute `./file_name.exe runserver localhost:8000 --noreload`

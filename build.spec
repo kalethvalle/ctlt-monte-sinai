@@ -1,9 +1,11 @@
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+from django.contrib.staticfiles import finders
 import os
 
 static_dir = os.path.join(os.getcwd(), "static")
 template_dir = os.path.join(os.getcwd(), "api", "templates")
 db_file = os.path.join(os.getcwd(), "db.sqlite3")
+admin_static_dir = finders.find('admin')
 block_cipher = None  # Asegúrate de definir esto si no lo usas
 
 # Configuración de Analysis
@@ -15,6 +17,7 @@ a = Analysis(
         (static_dir, "static"),  # Archivos estáticos
         (template_dir, "templates"),  # Templates
         (db_file, "."),  # Base de datos
+        (admin_static_dir, 'static/admin'),
         # (os.path.join(os.getcwd(), "api"), "api"),
         *collect_data_files("django"),
     ],
@@ -61,5 +64,4 @@ exe = EXE(
     name='ludo_tech',
     debug=False,
     console=True,
-    # onefile=True,
 )

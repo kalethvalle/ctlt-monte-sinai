@@ -24,3 +24,4 @@ api/viewsets/__pycache__
 api/consumers/__pycache__
 api/middlewares/__pycache__
 api/urls_ws/__pycache__
+.qodo
